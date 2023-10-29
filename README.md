@@ -1,31 +1,27 @@
-# Next.js & Cloudinary example app
+# My Photo Gallery
 
-This example shows how to create an image gallery site using Next.js, [Cloudinary](https://cloudinary.com), and [Tailwind](https://tailwindcss.com).
+I'm an amateur amateur photographer also known as a person that owns a camera and a phone with a camera. I love traveling and being in nature and have collected a number of photos in recent years. I'm not sure what else to do with the photos, so why not share them on a website?
 
-## Deploy your own
+## Credit
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or view the demo [here](https://nextconf-images.vercel.app/)
+I used this cool [Image Gallery Starter](https://vercel.com/templates/next.js/image-gallery-starter) template. It took less than an hour to setup.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-cloudinary&project-name=nextjs-image-gallery&repository-name=with-cloudinary&env=NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,CLOUDINARY_API_KEY,CLOUDINARY_API_SECRET,CLOUDINARY_FOLDER&envDescription=API%20Keys%20from%20Cloudinary%20needed%20to%20run%20this%20application.)
+## Usage
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Create a `.env` file with your environment variables
 
-## How to use
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example::
-
-```bash
- npx create-next-app --example with-cloudinary nextjs-image-gallery
+```json
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=XXXX
+CLOUDINARY_API_KEY=XXXX
+CLOUDINARY_API_SECRET=XXXX
+CLOUDINARY_FOLDER=XXXX
 ```
 
-```bash
-yarn create next-app --example with-cloudinary nextjs-image-gallery
-```
+I've implemented a `data/siteData.js` file so most content including on-page content and metadata can be modified from there.
 
-```bash
-pnpm create next-app --example with-cloudinary nextjs-image-gallery
-```
+## ToDo
 
-## References
-
-- Cloudinary API: https://cloudinary.com/documentation/transformation_reference
+- [x] Font/styling
+- [x] Image optimization
+- [x] Image caption/location component
+- [x] Image sorting
