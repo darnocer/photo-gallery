@@ -1,4 +1,5 @@
-import Document, { Head, Html, Main, NextScript } from 'next/document'
+import Document, { Head, Html, Main, NextScript } from "next/document";
+import siteData from "../data/siteData";
 
 class MyDocument extends Document {
   render() {
@@ -6,10 +7,7 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <link rel="icon" href="/favicon.ico" />
-          <meta
-            name="description"
-            content="See pictures from Next.js Conf and the After Party."
-          />
+          <meta name="description" content={siteData.description} />
           <meta property="og:site_name" content="nextjsconf-pics.vercel.app" />
           <meta
             property="og:description"
@@ -28,8 +26,8 @@ class MyDocument extends Document {
           <NextScript />
         </body>
       </Html>
-    )
+    );
   }
 }
 
-export default MyDocument
+export default MyDocument;
