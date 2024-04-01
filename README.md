@@ -8,7 +8,11 @@ https://www.darian.photos/
 
 I used this cool [Image Gallery Starter](https://vercel.com/templates/next.js/image-gallery-starter) template. It took less than an hour to setup.
 
-## Usage
+## Development
+
+### Cloudinary setup
+
+Setup a [Cloudinary](https://cloudinary.com) account and upload your photos to an album.
 
 Create a `.env` file with your environment variables
 
@@ -19,7 +23,19 @@ CLOUDINARY_API_SECRET=XXXX
 CLOUDINARY_FOLDER=XXXX
 ```
 
+### Content
+
 I've implemented a `data/siteData.js` file so most content including on-page content and metadata can be modified from there.
+
+### Getting Started
+
+```bash
+npm i
+```
+
+```bash
+npm run dev
+```
 
 ## ToDo
 
