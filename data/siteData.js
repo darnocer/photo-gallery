@@ -20,10 +20,13 @@ const siteData = {
   content: {
     heading: "My Adventures",
     description:
-      "Just a collection of photos of some of my recent adventures because why not",
+      "Just a collection of photos from some of my recent adventures.",
     button: {
       link: "https://darian.digital",
       text: "Connect with me",
+    },
+    footer: {
+      content: "Made with 👽 by darian.",
     },
   },
 };
