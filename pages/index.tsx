@@ -4,10 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
-import Bridge from "../components/Icons/Bridge";
+
 import Logo from "../components/Icons/Logo";
+
 import Modal from "../components/Modal";
 import cloudinary from "../utils/cloudinary";
+import getImageMetadata from "../utils/getImageMetadata";
 import getBase64ImageUrl from "../utils/generateBlurPlaceholder";
 import type { ImageProps } from "../utils/types";
 import { useLastViewedPhoto } from "../utils/useLastViewedPhoto";
@@ -46,13 +48,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
           />
         )}
         <div className="columns-1 gap-4 sm:columns-2 xl:columns-3 2xl:columns-4">
-          <div className="after:content relative mb-5 flex h-[629px] flex-col items-center justify-end gap-4 overflow-hidden rounded-lg bg-white/10 px-6 pb-16 pt-64 text-center text-white shadow-highlight after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight lg:pt-0">
-            <div className="absolute inset-0 flex items-center justify-center opacity-20">
-              {/* <span className="flex max-h-full max-w-full items-center justify-center">
-                <Bridge />
-              </span> */}
-              <span className="absolute bottom-0 left-0 right-0 h-[400px] bg-gradient-to-b from-black/0 via-black to-black"></span>
-            </div>
+          <div className="after:content relative mb-5 flex h-[540px] flex-col items-center justify-center gap-4 overflow-hidden rounded-lg bg-white/10 px-6 pb-16 pt-64 text-center text-white shadow-highlight after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight lg:pt-0">
             <Logo />
             <h1 className="mb-4 mt-8 text-base font-bold uppercase tracking-widest">
               {siteData.content.heading}
@@ -61,7 +57,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
               {siteData.content.description}
             </p>
             <a
-              className="pointer z-10 mt-6 rounded-lg border border-white bg-white px-3 py-2 text-sm font-semibold text-black transition hover:bg-white/10 hover:text-white md:mt-4"
+              className="pointer z-10 mt-6 rounded-md border border-black bg-white px-3 py-2 text-xs font-semibold uppercase text-black transition hover:bg-white/10 hover:text-white md:mt-4"
               href={siteData.content.button.link}
               target="_blank"
               rel="noreferrer"
@@ -69,7 +65,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
               {siteData.content.button.text}
             </a>
           </div>
-          {images.map(({ id, public_id, format, blurDataUrl }) => (
+          {images.map(({ id, public_id, format, blurDataUrl, year }) => (
             <Link
               key={id}
               href={`/?photoId=${id}`}
@@ -92,14 +88,15 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
                   (max-width: 1536px) 33vw,
                   25vw"
               />
+              {/* {year ? (
+                <div className="absolute right-0 top-0">{year}</div>
+              ) : null} */}
             </Link>
           ))}
         </div>
       </main>
       <footer className="p-6 text-center text-white/80 sm:p-12">
-        <p>
-          Made with 👽 by <a href={siteData.website}>darian.</a>
-        </p>
+        <p className="text-xs">{siteData.content.footer.content}</p>
       </footer>
     </>
   );
@@ -113,28 +110,42 @@ export async function getStaticProps() {
     .sort_by("public_id", "desc")
     .max_results(400)
     .execute();
-  let reducedResults: ImageProps[] = [];
 
-  let i = 0;
-  for (let result of results.resources) {
-    reducedResults.push({
-      id: i,
+  const metadataPromises = results.resources.map((image) =>
+    getImageMetadata(image.public_id)
+  );
+  const metadataResults = await Promise.all(metadataPromises);
+
+  let reducedResults = results.resources.map((result, index) => {
+    const metadata = metadataResults[index];
+    const tags = metadata?.tags || [];
+    const caption = metadata?.context?.custom?.caption || null;
+    const location = metadata?.context?.custom?.location || null;
+    const year = metadata?.context?.custom?.year || null;
+
+    return {
+      id: index,
       height: result.height,
       width: result.width,
       public_id: result.public_id,
       format: result.format,
-    });
-    i++;
-  }
-
-  const blurImagePromises = results.resources.map((image: ImageProps) => {
-    return getBase64ImageUrl(image);
+      blurDataUrl: null,
+      tags,
+      caption,
+      location,
+      year,
+    };
   });
+
+  const blurImagePromises = reducedResults.map((image) =>
+    getBase64ImageUrl(image)
+  );
   const imagesWithBlurDataUrls = await Promise.all(blurImagePromises);
 
-  for (let i = 0; i < reducedResults.length; i++) {
-    reducedResults[i].blurDataUrl = imagesWithBlurDataUrls[i];
-  }
+  reducedResults = reducedResults.map((image, index) => ({
+    ...image,
+    blurDataUrl: imagesWithBlurDataUrls[index],
+  }));
 
   return {
     props: {
