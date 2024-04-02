@@ -37,12 +37,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const { photoId } = context.params;
   const results = await getResults();
 
-  // Fetch detailed metadata for the current photo
   const currentPhotoMetadata = await getImageMetadata(
     results.resources[Number(photoId)].public_id
   );
 
-  // Assuming getBase64ImageUrl takes the whole photo object to return its blurDataURL
   const blurDataUrl = await getBase64ImageUrl(currentPhotoMetadata);
 
   const currentPhoto: ImageProps = {
