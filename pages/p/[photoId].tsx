@@ -20,7 +20,7 @@ const Home: NextPage = ({ currentPhoto }: { currentPhoto: ImageProps }) => {
   return (
     <>
       <Head>
-        <title>Next.js Conf 2022 Photos</title>
+        <title>Darian's Photos</title>
         <meta property="og:image" content={currentPhotoUrl} />
         <meta name="twitter:image" content={currentPhotoUrl} />
       </Head>
@@ -53,10 +53,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
     format: currentPhotoMetadata.format,
     blurDataUrl: blurDataUrl,
     // Extracting custom metadata
-    tags: currentPhotoMetadata.tags,
-    caption: currentPhotoMetadata.context?.custom?.caption,
-    location: currentPhotoMetadata.context?.custom?.location,
-    year: currentPhotoMetadata.context?.custom?.year,
+    tags: currentPhotoMetadata.tags ?? null,
+    caption: currentPhotoMetadata.context?.custom?.caption ?? null,
+    location: currentPhotoMetadata.context?.custom?.location ?? null,
+    year: currentPhotoMetadata.context?.custom?.year ?? null,
   };
 
   return {
