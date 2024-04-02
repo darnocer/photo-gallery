@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
 import Logo from "../components/Icons/Logo";
+import Badge from "../components/Badge";
+import Location from "../components/Location";
 
 import Modal from "../components/Modal";
 import cloudinary from "../utils/cloudinary";
@@ -65,34 +67,47 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
               {siteData.content.button.text}
             </a>
           </div>
-          {images.map(({ id, public_id, format, blurDataUrl, year }) => (
-            <Link
-              key={id}
-              href={`/?photoId=${id}`}
-              as={`/p/${id}`}
-              ref={id === Number(lastViewedPhoto) ? lastViewedPhotoRef : null}
-              shallow
-              className="after:content group relative mb-5 block w-full cursor-zoom-in after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight"
-            >
-              <Image
-                alt="darian photo gallery"
-                className="transform rounded-lg brightness-90 transition will-change-auto group-hover:brightness-110"
-                style={{ transform: "translate3d(0, 0, 0)" }}
-                placeholder="blur"
-                blurDataURL={blurDataUrl}
-                src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_scale,w_720/${public_id}.${format}`}
-                width={720}
-                height={480}
-                sizes="(max-width: 640px) 100vw,
-                  (max-width: 1280px) 50vw,
-                  (max-width: 1536px) 33vw,
-                  25vw"
-              />
-              {/* {year ? (
-                <div className="absolute right-0 top-0">{year}</div>
-              ) : null} */}
-            </Link>
-          ))}
+          {images.map(
+            ({
+              id,
+              public_id,
+              format,
+              blurDataUrl,
+              year,
+              caption,
+              location,
+            }) => (
+              <Link
+                key={id}
+                href={`/?photoId=${id}`}
+                as={`/p/${id}`}
+                ref={id === Number(lastViewedPhoto) ? lastViewedPhotoRef : null}
+                shallow
+                className="after:content group relative mb-5 block w-full cursor-zoom-in overflow-hidden rounded-lg after:pointer-events-none after:absolute after:inset-0 after:shadow-highlight"
+              >
+                <Image
+                  alt="Image description"
+                  className="transform rounded-lg brightness-90 transition duration-300 ease-in-out group-hover:brightness-110"
+                  style={{ transform: "translate3d(0, 0, 0)" }}
+                  placeholder="blur"
+                  blurDataURL={blurDataUrl}
+                  src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_scale,w_720/${public_id}.${format}`}
+                  width={720}
+                  height={480}
+                  layout="responsive"
+                />
+                <div className="absolute inset-0 opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
+                  {year ? <Badge text={year} /> : null}
+                  {location ? <Location text={location} /> : null}
+                </div>
+                {caption && (
+                  <div className="absolute inset-x-0 bottom-0 translate-y-full bg-black/70 p-2 text-sm text-white transition-transform duration-300 ease-in-out group-hover:translate-y-0">
+                    <p>{caption}</p>
+                  </div>
+                )}
+              </Link>
+            )
+          )}
         </div>
       </main>
       <footer className="p-6 text-center text-white/80 sm:p-12">
