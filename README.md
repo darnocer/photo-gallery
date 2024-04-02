@@ -1,4 +1,4 @@
-# My Photo Gallery
+# 📸 My Photo Gallery
 
 I'm an amateur amateur photographer also known as a person that owns a camera and a phone with a camera. I love traveling and being in nature and have collected a number of photos in recent years. I'm not sure what else to do with the photos, so why not make a website?
 
