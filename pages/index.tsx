@@ -6,8 +6,8 @@ import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
 import Logo from "../components/Icons/Logo";
-import Badge from "../components/Badge";
 import Location from "../components/Location";
+import Caption from "../components/Caption";
 
 import Modal from "../components/Modal";
 import cloudinary from "../utils/cloudinary";
@@ -97,14 +97,10 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
                   layout="responsive"
                 />
                 <div className="absolute inset-0 opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
-                  {year ? <Badge text={year} /> : null}
+                  {/* {year ? <Badge text={year} /> : null} */}
                   {location ? <Location text={location} /> : null}
                 </div>
-                {caption && (
-                  <div className="absolute inset-x-0 bottom-0 translate-y-full bg-black/70 p-2 text-sm text-white transition-transform duration-300 ease-in-out group-hover:translate-y-0">
-                    <p>{caption}</p>
-                  </div>
-                )}
+                {caption && <Caption text={caption} />}
               </Link>
             )
           )}
